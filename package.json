@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/react-dom": "^16.8.4",
     "mdbootstrap": "^4.8.5",
     "mdbreact": "^4.18.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.0.1",
+    "typescript": "^3.2.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.2.1"
@@ -41,7 +43,6 @@
     "babel-preset-react": "^6.24.1",
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^0.23.0",
-    "typescript": "^3.0.3",
     "webpack-cli": "^3.1.0"
   }
 }
