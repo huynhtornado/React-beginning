@@ -31,3 +31,9 @@
     transform: rotate(360deg);
   }
 }
+
+.wrapp-box {
+  border: 3px green dashed;
+  border-radius: 8px; 
+  height: 800px;
+}

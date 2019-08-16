@@ -1,0 +1,18 @@
+
+$width-info-user: 100%;
+
+.container__header {
+    float: left;
+    width: 100%;
+    min-height: 50px;
+    background: green;
+}
+
+.header_info_user {
+    width: $width-info-user/3;
+    float: left;
+    text-align: center;
+    padding: 13px 0px;
+    color: white;
+    font-weight: 500;
+}

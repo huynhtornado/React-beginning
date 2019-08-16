@@ -1,0 +1,23 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    width: 70%;
+    max-width: 350px;
+    height: 100%;
+    background: white;
+    color: cornflowerblue;
+    box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
+    transform: translate(-100%);
+    transition: transform 0.3s ease-out;
+}
+
+.sidebar ul {
+    height: 100%;
+    list-style: none;
+}
+
+.sidebar.show {
+    transform: translate(0);
+}

@@ -29,10 +29,28 @@ module.exports = {
             query: {
                presets: ['es2015', 'react']
             }
-         }
+         },
+         {
+            test: /\.css$/,
+            use: ["style-loader", "css-loader"],
+         },
+         {
+            test: /\.scss$/,
+            use: [
+               "style-loader",
+               "css-loader",
+               "sass-loader",
+               {
+                  loader: "@epegzz/sass-vars-loader", // read Sass vars from file or options
+                  options: {
+                     files: [path.resolve(__dirname, "src/styles/colors.js")],
+                  },
+               },
+            ],
+         },
       ]
    },
-   plugins:[
+   plugins: [
       new HtmlWebpackPlugin({
          template: '../public/index.html'
       })
