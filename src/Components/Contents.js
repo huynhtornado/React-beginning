@@ -64,7 +64,7 @@ export default class Contents extends Component {
         });
     };
     handleDelete = eventId => {
-        const events = this.state.events.filter(e => e.id !== eventId);
+        const events = this.state.events.filter(e => e.id != eventId);
         this.setState({ events });
     };
     toggleModal = () => {

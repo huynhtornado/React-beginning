@@ -16,3 +16,24 @@ $width-info-user: 100%;
     color: white;
     font-weight: 500;
 }
+
+.container-word {
+    position: absolute;
+    width: 1134px;
+    height: 744px;
+    margin-top: 50px;
+}
+
+.word {
+    padding: 8px 12px;
+    background: white;
+    border-radius: 8px;
+    border: 1px gainsboro solid;
+    font-weight: bold;
+    opacity: 0;
+}
+
+.word.active {
+    opacity: 1;
+    position: absolute;
+}

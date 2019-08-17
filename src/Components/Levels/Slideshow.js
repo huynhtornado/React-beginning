@@ -48,7 +48,7 @@ class Slideshow extends Component {
                 <div
                   key={index}
                   className={
-                    `slide ${this.state.currentIndex === index ? "active" : ""}`
+                    `slide ${this.state.currentIndex == index ? "active" : ""}`
                   }
                 >
                   <img className="image" src={image} alt={image}  width="1134" height="744" />

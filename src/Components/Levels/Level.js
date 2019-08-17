@@ -15,51 +15,116 @@ const images = [bagImage1, bagImage2, bagImage3, bagImage4, bagImage5];
 const words = [
     {
         level1: [
-            { id: 1, name: 'Hello' },
-            { id: 2, name: 'Hi' },
-            { id: 3, name: 'Good morning' },
-            { id: 4, name: 'Good afternoon' },
-            { id: 5, name: 'Good night' },
-            { id: 6, name: 'Good bye' },
+            { id: 0, name: 'Hello' },
+            { id: 1, name: 'Hi' },
+            { id: 2, name: 'Good morning' },
+            { id: 3, name: 'Good afternoon' },
+            { id: 4, name: 'Good night' },
+            { id: 5, name: 'Good bye' },
         ],
     },
     {
         level2: [
-            { id: 1, name: 'Hello Word' },
-            { id: 2, name: 'Hi guys' },
-            { id: 3, name: 'Good morning men' },
-            { id: 4, name: 'Good afternoon girl' },
-            { id: 5, name: 'Good night honey' },
-            { id: 6, name: 'Good bye teacher' },
+            { id: 0, name: 'Hello Word' },
+            { id: 1, name: 'Hi guys' },
+            { id: 2, name: 'Good morning men' },
+            { id: 3, name: 'Good afternoon girl' },
+            { id: 4, name: 'Good night honey' },
+            { id: 5, name: 'Good bye teacher' },
         ]
     }
 ]
 
 class Level extends Component {
 
+    wordLevel;
     constructor(props) {
         super(props)
+
+        this.state = {
+            currentIndex: 0
+        }
+    }
+    
+
+    onAnimationWord = () => {
+        let index = 0;
+        index = this.state.currentIndex + 1;
+        if (index >= this.wordLevel.length) {
+            this.setState({
+                currentIndex: ''
+            });
+        } else {
+            this.setState({
+                currentIndex: index
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.numId = 0;
+        if (this.numId < this.wordLevel.length) {
+            let wordId = document.getElementById(`word${this.numId}`);
+            wordId.style.left = '0px';
+            let positionWord = 0;
+            this.intervalAnimationWord = setInterval(() => {
+                if (positionWord != 1085) {
+                    positionWord++;
+                    wordId.style.left = positionWord + 'px';
+                } else {
+                    this.numId++;
+                    clearInterval(this.intervalAnimationWord);
+                    this.onAnimationWord();
+                }
+            }, 1);
+        }
+    }
+
+    componentDidUpdate() {
+        clearInterval(this.intervalAnimationWord);
+        if (this.numId < this.wordLevel.length) {
+            let wordId = document.getElementById(`word${this.numId}`);
+            wordId.style.left = '0px';
+            let positionWord = 0;
+            
+            this.intervalAnimationWord = setInterval(() => {
+                if (positionWord != 1085) {
+                    positionWord++;
+                    wordId.style.left = positionWord + 'px';
+                } else {
+                    this.numId++;
+                    clearInterval(this.intervalAnimationWord);
+                    this.onAnimationWord();
+                }
+            }, 1);
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalAnimationWord);
     }
 
     render() {
         let level = [];
         if (this.props.level == 'easy') {
             level = words[0]['level1'];
-            console.log('props level: ', words[0]['level1']);
         } else if (this.props.level == 'medium') {
             level = words[1]['level2'];
-            console.log('props level: ', words);
         } else {
             console.log('props level: ', words);
         }
 
-        let wordLevel;
-        if (level !== []) {
-            wordLevel = level.map((item) => 
-                <div key={item.id}>{item.name}</div>
+        if (level != []) {
+            this.wordLevel = level.map((item) => 
+                <label id={`word${item.id}`} className={
+                        `word ${this.state.currentIndex == item.id ? "active" : ""}`
+                    }
+                    key={item.id}>
+                    {item.name}
+                </label>
             )
         } else {
-            wordLevel = '';
+            this.wordLevel = '';
         }
 
         return (
@@ -70,7 +135,9 @@ class Level extends Component {
                     <div className="header_info_user">Score: 0</div>
                 </div>
                 <Slideshow input={images} />
-                { wordLevel }
+                <div className="container-word">
+                    { this.wordLevel }
+                </div>
             </React.Fragment>
         );
     }
