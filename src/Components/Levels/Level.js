@@ -45,14 +45,11 @@ class Level extends Component {
             currentIndex: 0
         }
     }
-    
 
-    onAnimationWord = () => {
-        let index = 0;
-        index = this.state.currentIndex + 1;
+    onAnimationWord = (index) => {
         if (index >= this.wordLevel.length) {
             this.setState({
-                currentIndex: ''
+                currentIndex: -1
             });
         } else {
             this.setState({
@@ -64,17 +61,21 @@ class Level extends Component {
     componentDidMount() {
         this.numId = 0;
         if (this.numId < this.wordLevel.length) {
-            let wordId = document.getElementById(`word${this.numId}`);
-            wordId.style.left = '0px';
-            let positionWord = 0;
+            this.wordId = document.getElementById(`word${this.numId}`);
+            this.wordId.style.left = '0px';
+            this.positionWord = 0;
             this.intervalAnimationWord = setInterval(() => {
-                if (positionWord != 1085) {
-                    positionWord++;
-                    wordId.style.left = positionWord + 'px';
+                if (this.positionWord != 1085) {
+                    this.positionWord++;
+                    this.wordId.style.left = this.positionWord + 'px';
+                    
                 } else {
+                    this.wordId.style.left = '';
+                    this.wordId.style.opacity = '';
+                    this.wordId.style.position = '';
                     this.numId++;
                     clearInterval(this.intervalAnimationWord);
-                    this.onAnimationWord();
+                    this.onAnimationWord(this.numId);
                 }
             }, 1);
         }
@@ -83,18 +84,20 @@ class Level extends Component {
     componentDidUpdate() {
         clearInterval(this.intervalAnimationWord);
         if (this.numId < this.wordLevel.length) {
-            let wordId = document.getElementById(`word${this.numId}`);
-            wordId.style.left = '0px';
-            let positionWord = 0;
-            
+            this.wordId = document.getElementById(`word${this.numId}`);
+            this.wordId.style.left = '0px';
+            this.positionWord = 0;
             this.intervalAnimationWord = setInterval(() => {
-                if (positionWord != 1085) {
-                    positionWord++;
-                    wordId.style.left = positionWord + 'px';
+                if (this.positionWord != 1085) {
+                    this.positionWord++;
+                    this.wordId.style.left = this.positionWord + 'px';
                 } else {
+                    this.wordId.style.left = '';
+                    this.wordId.style.opacity = '';
+                    this.wordId.style.position = '';
                     this.numId++;
                     clearInterval(this.intervalAnimationWord);
-                    this.onAnimationWord();
+                    this.onAnimationWord(this.numId);
                 }
             }, 1);
         }
@@ -102,6 +105,10 @@ class Level extends Component {
 
     componentWillUnmount() {
         clearInterval(this.intervalAnimationWord);
+    }
+
+    handlerKeyDownWord = (event) => {
+        console.log(event.target.value);
     }
 
     render() {
@@ -119,7 +126,8 @@ class Level extends Component {
                 <label id={`word${item.id}`} className={
                         `word ${this.state.currentIndex == item.id ? "active" : ""}`
                     }
-                    key={item.id}>
+                    key={item.id}
+                    onKeyDown={this.handlerKeyDownWord}>
                     {item.name}
                 </label>
             )
