@@ -12,36 +12,30 @@ import bagImage5 from '../../assets/images/nature-2679131_960_720.jpg';
 
 const images = [bagImage1, bagImage2, bagImage3, bagImage4, bagImage5];
 
-const words = [
-    {
-        level1: [
-            { id: 0, name: 'Hello' },
-            { id: 1, name: 'Hi' },
-            { id: 2, name: 'Good morning' },
-            { id: 3, name: 'Good afternoon' },
-            { id: 4, name: 'Good night' },
-            { id: 5, name: 'Good bye' },
-        ],
-    },
-    {
-        level2: [
-            { id: 0, name: 'Hello Word' },
-            { id: 1, name: 'Hi guys' },
-            { id: 2, name: 'Good morning men' },
-            { id: 3, name: 'Good afternoon girl' },
-            { id: 4, name: 'Good night honey' },
-            { id: 5, name: 'Good bye teacher' },
-        ]
-    }
-]
+const words = {
+    'easy': [
+        { 0: [{ id: 0, name: 'h', color: 'black' }, { id: 1, name: 'e', color: 'black' }, { id: 2, name: 'l', color: 'black' }, { id: 3, name: 'l', color: 'black' }, { id: 4, name: 'o', color: 'black' }] },
+        { 1: [{ id: 0, name: 'h', color: 'black' }, { id: 1, name: 'i', color: 'black' }] },
+    ],
+    'medium': [
+        { 0: [{ id: 0, name: 'h', color: 'black' }, { id: 1, name: 'e', color: 'black' }, { id: 2, name: 'l', color: 'black' }, { id: 3, name: 'l', color: 'black' }, { id: 4, name: 'o', color: 'black' }] },
+        { 1: [{ id: 0, name: 'h', color: 'black' }, { id: 1, name: 'i', color: 'black' }] },
+    ],
+    'difficult': [
+        { 0: [{ id: 0, name: 'h' }, { id: 1, name: 'e' }, { id: 2, name: 'l' }, { id: 3, name: 'l' }, { id: 4, name: 'o' }] },
+        { 1: [{ id: 0, name: 'h' }, { id: 1, name: 'i' }] },
+    ]
+}
 
 class Level extends Component {
 
     wordLevel;
+    keyWord = [];
     constructor(props) {
         super(props)
 
         this.state = {
+            words: words,
             currentIndex: 0
         }
     }
@@ -68,7 +62,7 @@ class Level extends Component {
                 if (this.positionWord != 1085) {
                     this.positionWord++;
                     this.wordId.style.left = this.positionWord + 'px';
-                    
+                    document.addEventListener('keypress', this.handlerKeyDownWord, false);
                 } else {
                     this.wordId.style.left = '';
                     this.wordId.style.opacity = '';
@@ -77,7 +71,7 @@ class Level extends Component {
                     clearInterval(this.intervalAnimationWord);
                     this.onAnimationWord(this.numId);
                 }
-            }, 1);
+            }, 15);
         }
     }
 
@@ -91,6 +85,7 @@ class Level extends Component {
                 if (this.positionWord != 1085) {
                     this.positionWord++;
                     this.wordId.style.left = this.positionWord + 'px';
+                    document.addEventListener('keypress', this.handlerKeyDownWord, false);
                 } else {
                     this.wordId.style.left = '';
                     this.wordId.style.opacity = '';
@@ -99,38 +94,73 @@ class Level extends Component {
                     clearInterval(this.intervalAnimationWord);
                     this.onAnimationWord(this.numId);
                 }
-            }, 1);
+            }, 15);
         }
     }
 
     componentWillUnmount() {
+        document.removeEventListener('keypress', this.handlerKeyDownWord, false);
         clearInterval(this.intervalAnimationWord);
     }
 
     handlerKeyDownWord = (event) => {
-        console.log(event.target.value);
+        let word = this.keyWord[0];
+        if (event.key == word) {
+            if (this.props.level === 'easy') {
+                this.state.words['easy'].map((item, index) => {
+                    if (index == this.state.currentIndex) {
+                        item[index].forEach(element => {
+                            if (element.name == event.key) {
+                                element.color = 'red';
+                                this.setState({
+                                    words: words
+                                });
+                            }
+                        });
+                    }
+                });
+            } else if (this.props.level === 'medium') {
+                this.state.words.map((level) => {
+                    let keyword = this.state.words[0][this.state.currentIndex].indexOf(event.key);
+                    this.setState({
+
+                    });
+                })
+            } else {
+                this.state.words.map((level) => {
+                    let keyword = this.state.words[0][this.state.currentIndex].indexOf(event.key);
+                    this.setState({
+
+                    });
+                })
+            }
+        }
+
     }
 
     render() {
         let level = [];
         if (this.props.level == 'easy') {
-            level = words[0]['level1'];
+            level = words['easy'];
         } else if (this.props.level == 'medium') {
-            level = words[1]['level2'];
+            level = words['medium'];
         } else {
-            console.log('props level: ', words);
+            level = words['difficult'];
         }
 
         if (level != []) {
-            this.wordLevel = level.map((item) => 
-                <label id={`word${item.id}`} className={
-                        `word ${this.state.currentIndex == item.id ? "active" : ""}`
+            this.wordLevel = level.map((itemLevel, index) => 
+                <label key={index} id={`word${index}`} className={
+                    `word ${this.state.currentIndex == index ? "active" : ""}`
+                }>
+                    {
+                        itemLevel[index].map((itemWord) => (
+                            this.keyWord.push(itemWord.name),
+                            <i key={itemWord.id} style={{ color: `${itemWord.color}`}}>{itemWord.name}</i>
+                        ))
                     }
-                    key={item.id}
-                    onKeyDown={this.handlerKeyDownWord}>
-                    {item.name}
                 </label>
-            )
+            );
         } else {
             this.wordLevel = '';
         }
